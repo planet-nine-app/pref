@@ -206,10 +206,11 @@ signature message is: timestamp + userUUID + hash</code></summary>
 ##### Example cURL
 
 > ```javascript
->  curl -X DELETE https://www.continuebee.com/user/delete
+>  curl -X DELETE https://pref.planetnine.app/user/delete
 > ```
 
 </details>
+
 
 ## Databases
 
