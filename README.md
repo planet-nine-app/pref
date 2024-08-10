@@ -183,6 +183,8 @@ signature message is:  timestamp + userUUID + hash</code></summary>
 >  curl -X GET -H "Content-Type: application/json" https://pref.planetnine.app/user/:uuid/global/preferences?timestamp=123&hash=hash&signature=signature 
 > ```
 
+</details>
+
 <details>
   <summary><code>DELETE</code> <code><b>/user/delete</b></code> <code>Deletes a uuid and pubKey.
 signature message is: timestamp + userUUID + hash</code></summary>
