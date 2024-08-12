@@ -8,7 +8,8 @@ const client = await createClient()
 
 const db = {
   getPreferences: async (uuid, hash) => {
-    const preferences = await client.get(`preferences:${uuid}:${hash}`);
+console.log(uuid, hash);
+    const preferences = await client.get(`preferences:${uuid}_${hash}`);
     const parsedPreferences = JSON.parse(preferences);
 console.log(`parsedPreferences: ${JSON.stringify(parsedPreferences)}`);
 console.log(uuid);
@@ -16,12 +17,13 @@ console.log(uuid);
   },
 
   putPreferences: async (uuid, preferences, hash) => {
-    await client.set(`preferences:${uuid}:${hash}`, JSON.stringify(preferences));
-    return uuid;
+console.log(uuid, preferences, hash);
+    await client.set(`preferences:${uuid}_${hash}`, JSON.stringify(preferences));
+    return preferences;
   },
 
-  getGlobalPreferences: async (uuid, hash) => {
-    const preferences = await client.get(`preferences:${uuid}:Earth`);
+  getGlobalPreferences: async (uuid) => {
+    const preferences = await client.get(`preferences:${uuid}_Earth`);
     const parsedPreferences = JSON.parse(preferences);
 console.log(`parsedPreferences: ${JSON.stringify(parsedPreferences)}`);
 console.log(uuid);
@@ -29,12 +31,12 @@ console.log(uuid);
   },
 
   putGlobalPreferences: async (uuid, preferences, hash) => {
-    await client.set(`preferences:${uuid}:Earth`, JSON.stringify(preferences));
-    return uuid;
+    await client.set(`preferences:${uuid}_Earth`, JSON.stringify(preferences));
+    return preferences;
   },
 
   deletePreferences: async (uuid, hash) => {
-    const resp = await client.sendCommand(['DEL', `preferences:${uuid}:${hash}`]);
+    const resp = await client.sendCommand(['DEL', `preferences:${uuid}_${hash}`]);
 
     return true;
   },

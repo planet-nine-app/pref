@@ -29,6 +29,7 @@ const _delete = async function(path, body) {
 const hash = "hereisanexampleofahash";
 let savedUser = {};
 let keys = {};
+let keysToReturn = {};
 
 it('should register a user', async () => {
   keys = await sessionless.generateKeys((k) => { keysToReturn = k; }, () => {return keysToReturn;});
@@ -49,6 +50,7 @@ it('should register a user', async () => {
   payload.signature = await sessionless.sign(payload.timestamp + payload.pubKey + hash);
 
   const res = await put(`${baseURL}user/create`, payload);
+console.log(res.body);
   savedUser = res.body;
   res.body.uuid.length.should.equal(36);
 });
@@ -63,9 +65,16 @@ it('should update preferences', async () => {
   };
 
   const signature = await sessionless.sign(timestamp + uuid + hash);
-  const payload = {timestamp, uuid, hash, newPreferences, signature};
+  const payload = {
+    timestamp, 
+    uuid, 
+    hash, 
+    preferences: newPreferences, 
+    signature
+  };
 
-  const res = await put(`${baseURL}user/update-hash`, payload);
+  const res = await put(`${baseURL}user/${savedUser.uuid}/preferences`, payload);
+console.log(res.body);
   res.body.preferences.baz.should.equal("updated");
 });
 
@@ -75,7 +84,8 @@ it('should get preferences', async () => {
 
   const signature = await sessionless.sign(timestamp + uuid + hash);
 
-  const res = await get(`${baseURL}user/${uuid}?timestamp=${timestamp}&signature=${signature}`);
+  const res = await get(`${baseURL}user/${uuid}/preferences?timestamp=${timestamp}&signature=${signature}&hash=${hash}`);
+console.log(res.body);
   res.body.preferences.baz.should.equal("updated");   
 });
 
@@ -89,9 +99,16 @@ it('should update global preferences', async () => {
   };
 
   const signature = await sessionless.sign(timestamp + uuid + hash);
-  const payload = {timestamp, uuid, hash, newPreferences, signature};
+  const payload = {
+    timestamp, 
+    uuid, 
+    hash, 
+    preferences: newPreferences, 
+    signature
+  };
 
-  const res = await put(`${baseURL}user/update-hash`, payload);
+  const res = await put(`${baseURL}user/${savedUser.uuid}/global/preferences`, payload);
+console.log(res.body);
   res.body.preferences.baz.should.equal("updated");
 });
 
@@ -101,7 +118,8 @@ it('should get global preferences', async () => {
 
   const signature = await sessionless.sign(timestamp + uuid + hash);
 
-  const res = await get(`${baseURL}user/${uuid}?timestamp=${timestamp}&signature=${signature}`);
+  const res = await get(`${baseURL}user/${uuid}/global/preferences?timestamp=${timestamp}&signature=${signature}`);
+console.log(res.body);
   res.body.preferences.baz.should.equal("updated");   
 });
 
@@ -114,5 +132,6 @@ it('should delete a user', async () => {
 
 
   const res = await _delete(`${baseURL}user/delete`, payload);
+console.log(res.body);
   res.status.should.equal(200);
 });

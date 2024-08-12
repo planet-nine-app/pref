@@ -13,12 +13,12 @@ const prefs = {
   },
 
   getGlobalPreferences: async (uuid) => {
-    const preferences = await db.getUser(uuid);
+    const preferences = await db.getGlobalPreferences(uuid);
     return preferences;
   },
 
   putGlobalPreferences: async (uuid, newPreferences) => {
-    const resp = await db.putPreferences(uuid, newPreferences);
+    const resp = await db.putGlobalPreferences(uuid, newPreferences);
 
     return resp;
   },
