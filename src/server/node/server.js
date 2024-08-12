@@ -29,6 +29,20 @@ console.log('got request');
   next();
 });
 
+app.put('*', (req, res, next) => {
+  if(!res.body) {
+    return next();
+  }
+  const values = Object.values(req.body.preferences);
+  const filteredValues = values.filter(value => typeof value === 'string' && value.length < 256); // 256 is an arbitrary placeholder value
+  if(values.length !== filteredValues.length || values.length > 64) { // 64 is another arbitrary placeholder value
+    res.status(404);
+    return res.send({error: 'Not found'});
+  }
+console.log('about to next');
+  next();
+});
+
 app.put('/user/create', async (req, res) => {
   try {
     const body = req.body;
