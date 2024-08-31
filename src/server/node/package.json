@@ -12,7 +12,6 @@
   "dependencies": {
     "express": "^4.19.2",
     "node-fetch": "^3.3.2",
-    "redis": "^4.7.0",
     "sessionless-node": "^0.10.1"
   }
 }
