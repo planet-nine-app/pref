@@ -1,5 +1,5 @@
 import config from '../../config/local.js';
-import { createClient } from 'redis';
+import { createClient } from './client.js';
 import sessionless from 'sessionless-node';
 
 const client = await createClient()
@@ -36,7 +36,7 @@ console.log(uuid);
   },
 
   deletePreferences: async (uuid, hash) => {
-    const resp = await client.sendCommand(['DEL', `preferences:${uuid}_${hash}`]);
+    const resp = await client.del(`preferences:${uuid}_${hash}`);
 
     return true;
   },
