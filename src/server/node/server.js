@@ -13,7 +13,7 @@ const gk = () => {
   return keys;
 };
 
-const continuebeeURL = 'https://thirsty-gnu-80.deno.dev/';
+const continuebeeURL = 'https://dev.continuebee.allyabase.com/';
 
 sessionless.generateKeys(sk, gk);
 
