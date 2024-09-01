@@ -60,7 +60,7 @@ console.log(body);
       headers: {'Content-Type': 'application/json'}
     });
 console.log(resp.status);
-    if(resp.status !== 201) {
+    if(resp.status !== 200) {
       res.status = 403;
       return res.send({error: 'Auth error'});
     }
