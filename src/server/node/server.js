@@ -1,5 +1,6 @@
 import config from './config/local.js';
 import express from 'express';
+import cors from 'cors';
 import preferences from './src/preferences/preferences.js';
 import fetch from 'node-fetch';
 import sessionless from 'sessionless-node';
@@ -17,6 +18,7 @@ const continuebeeURL = 'https://thirsty-gnu-80.deno.dev/';
 sessionless.generateKeys(sk, gk);
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.use((req, res, next) => {
