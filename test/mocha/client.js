@@ -24,7 +24,7 @@ it('should save preferences', async () => {
     foo: 'bar',
     baz: 'updated'
   };
-  const res = await preferences.updatePreferences(savedUser.uuid, hash, bdo);
+  const res = await preferences.updatePreferences(savedUser.uuid, hash, newPreferences);
   res.preferences.baz.should.equal('updated');
 });
 
