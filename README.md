@@ -231,19 +231,17 @@ uuid, and pubKey should have unique constraints (Sessionless generated keys and 
 Client SDKs need to generate keys via Sessionless, and implement the networking to interface with the server. 
 To do so they should implement the following methods:
 
-`checkForUser()` - Checks if keys have been generated, and a uuid exists (all of these should be stored in secure storage of the client)--this is the Sessionless check for if a user is logged in.
+`createUser(hash, newPreferences, saveKeys, getKeys)` - Should generate keys, save them appropriately client side, and PUT to /user/create.
 
-`createUser()` - Should generate keys, save them appropriately client side, and PUT to /user/create.
+`updatePreferences(uuid, hash, newPreferences)` - Should PUT the passed in preferences.
 
-`savePreferences(preferences)` - Should PUT the passed in preferences.
+`saveGlobalPreferences(uuid, hash, newPreferences)` - Should PUT the passed in global preferences.
 
-`saveGlobalPreferences(preferences)` - Should PUT the passed in global preferences.
+`getPreferences(uuid, hash)` - Should GET preferences.
 
-`getPreferences()` - Should GET preferences.
+`getGlobalPreferences(uuid, hash)` - Should GET global preferences.
 
-`getGlobalPreferences()` - Should GET global preferences.
-
-`deleteUser(uuid)` - Should DELETE a user by calling /user/:uuid.
+`deleteUser(uuid, hash)` - Should DELETE a user by calling /user/:uuid.
 
 
 ## Use cases
