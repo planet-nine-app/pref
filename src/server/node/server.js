@@ -119,7 +119,7 @@ console.log('get preferences');
     const signature = req.query.signature;
     const hash = req.query.hash;
 
-    const resp = await fetch(`${continuebeeURL}user/${uuid}?timestamp=${timestamp}&signature=${signature}`);
+    const resp = await fetch(`${continuebeeURL}user/${uuid}?timestamp=${timestamp}&hash=${hash}&signature=${signature}`);
 console.log(resp.status);
     if(resp.status !== 200) {
       res.status = 403;
@@ -169,9 +169,10 @@ app.get('/user/:uuid/global/preferences', async (req, res) => {
   try {
     const uuid = req.params.uuid;
     const timestamp = req.query.timestamp;
+    const hash = req.query.hash;
     const signature = req.query.signature;
 
-    const resp = await fetch(`${continuebeeURL}user/${uuid}?timestamp=${timestamp}&signature=${signature}`);
+    const resp = await fetch(`${continuebeeURL}user/${uuid}?timestamp=${timestamp}&hash=${hash}&signature=${signature}`);
 console.log(resp.status);
     if(resp.status !== 200) {
       res.status = 403;
