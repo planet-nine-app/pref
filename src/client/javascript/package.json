@@ -1,0 +1,20 @@
+{
+  "name": "pref-js",
+  "version": "0.0.1",
+  "description": "JavaScript client for Pref",
+  "main": "pref.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/planet-nine-app/pref.git"
+  },
+  "type": "module",
+  "author": "planetnineisaspaceship",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "sessionless-node": "^0.11.0"
+  }
+}
