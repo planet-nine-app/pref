@@ -199,7 +199,7 @@ app.delete('/user/delete', async (req, res) => {
     const hash = body.hash;
     const signature = body.signature;
 
-    const resp = await fetch(`${continuebeeURL}user/${uuid}?timestamp=${timestamp}&signature=${signature}`);
+    const resp = await fetch(`${continuebeeURL}user/${uuid}?timestamp=${timestamp}&hash=${hash}&signature=${signature}`);
 console.log(resp.status);
     if(resp.status !== 200) {
       res.status = 403;
