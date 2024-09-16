@@ -1,5 +1,5 @@
 {
-  "name": "pref-js",
+  "name": "pn-pref-js",
   "version": "0.0.1",
   "description": "JavaScript client for Pref",
   "main": "pref.js",

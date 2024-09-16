@@ -2,6 +2,7 @@ import config from './config/local.js';
 import express from 'express';
 import cors from 'cors';
 import preferences from './src/preferences/preferences.js';
+import MAGIC from './src/magic/magic.js';
 import fetch from 'node-fetch';
 import sessionless from 'sessionless-node';
 
@@ -188,6 +189,28 @@ console.log(resp.status);
 console.warn(err);
     res.status(404);
     return res.send({error: 'not found'});
+  }
+});
+
+app.post('/magic/spell/:spellName', async (req, res) => {
+  try {
+    const spellName = req.params.spell;
+    const spell = req.body.spell;
+    
+    switch(spellName) {
+      case 'joinup': const resp = await MAGIC.joinup(spell);
+        return res.send(resp);
+        break;
+      case 'linkup': const resp = await MAGIC.linkup(spell);
+        return res.send(resp);
+        break;
+    }
+  
+    res.status(404);
+    res.send({error: 'spell not found'});
+  } catch(err) {
+    res.status(404);
+    res.send({error: 'not found'});
   }
 });
 
