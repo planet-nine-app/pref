@@ -40,6 +40,16 @@ console.log(uuid);
 
     return true;
   },
+
+  saveKeys: async (keys) => {
+    await client.set(`keys`, JSON.stringify(keys));
+  },
+
+  getKeys: async () => {
+    const keyString = await client.get('keys');
+    return JSON.parse(keyString);
+  }
+
 };
 
 export default db;

@@ -4,6 +4,7 @@ import cors from 'cors';
 import preferences from './src/preferences/preferences.js';
 import MAGIC from './src/magic/magic.js';
 import fetch from 'node-fetch';
+import fount from 'fount-js';
 import sessionless from 'sessionless-node';
 
 const sk = (keys) => {
@@ -14,13 +15,36 @@ const gk = () => {
   return keys;
 };
 
-const continuebeeURL = 'https://dev.continuebee.allyabase.com/';
-
 sessionless.generateKeys(sk, gk);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const SUBDOMAIN = process.env.SUBDOMAIN || 'dev';
+const continuebeeURL = `https://${SUBDOMAIN}.continuebee.allyabase.com/`;
+fount.baseURL = `${SUBDOMAIN}.fount.allyabase.com`;
+
+const repeat = (func) => {
+  setTimeout(func, 2000);
+};
+
+const bootstrap = async () => {
+  try {
+    await user.getUserByUUID('pref');
+    sessionless.getKeys = db.getKeys;
+  } catch(err) {
+    const fountUUID = await fount.createUser(db.saveKeys, db.getKeys);
+    const pref = {
+      uuid: 'pref',
+      fountUUID
+    };
+    await db.saveUser(pref);
+    repeat(bootstrap);
+  }
+};
+
+repeat(bootstrap);
 
 app.use((req, res, next) => {
 console.log('got request');
