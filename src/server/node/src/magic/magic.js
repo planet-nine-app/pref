@@ -42,7 +42,7 @@ const MAGIC = {
   gatewayForSpell: async (spellName) => {
     const pref = await db.getUser('pref');
     const gateway = {
-      timestamp = new Date().getTime() + '',
+      timestamp: new Date().getTime() + '',
       uuid: pref.uuid, 
       minimumCost: 20,
       ordinal: pref.ordinal
