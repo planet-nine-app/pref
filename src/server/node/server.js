@@ -32,15 +32,23 @@ const repeat = (func) => {
 
 const bootstrap = async () => {
   try {
-    await user.getUserByUUID('pref');
-    sessionless.getKeys = db.getKeys;
-  } catch(err) {
-    const fountUUID = await fount.createUser(db.saveKeys, db.getKeys);
+    const { fountUUID = uuid, fountPubKey = pubKey } = await fount.createUser(db.saveKeys, db.getKeys);
+    const bdoUUID = await bdo.createUser(bdoHash, () => {}, db.getKeys);
+    const spellbook = await bdo.getBDO(bdoUUID, bdoHash, fountPubKey);
     const pref = {
       uuid: 'pref',
-      fountUUID
+      fountUUID,
+      fountPubKey,
+      bdoUUID,
+      spellbook
     };
+
+    if(!pref.fountUUID || !pref.bdoUUID || !spellbook) {
+      throw new Error('bootstrap failed');
+    }
+
     await db.saveUser(pref);
+  } catch(err) {
     repeat(bootstrap);
   }
 };
