@@ -13,7 +13,7 @@ const MAGIC = {
     spell.gateways.push(gateway);
 
     const spellbook = await db.get('spellbook');
-    const nextIndex = spellbook.destinations.indexOf(spellbook.destinations.find(($) => $.stopName === 'addie'));
+    const nextIndex = spellbook.destinations.indexOf(spellbook.destinations.find(($) => $.stopName === 'pref'));
     const nextDestination = spellbook.destinations[nextIndex].stopURL;
 
     const res = await MAGIC.forwardSpell(spell, nextDestination);
