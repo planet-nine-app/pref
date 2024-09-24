@@ -33,7 +33,8 @@ const pref = {
   baseURL: 'https://dev.pref.allyabase.com/',
 
   createUser: async (hash, newPreferences, saveKeys, getKeys) => {
-    const keys = await sessionless.generateKeys(saveKeys, getKeys);
+    const keys = (await getKeys()) || (await sessionless.generateKeys(saveKeys, getKeys))
+    sessionless.getKeys = getKeys;
 
     const payload = {
       timestamp: new Date().getTime() + '',

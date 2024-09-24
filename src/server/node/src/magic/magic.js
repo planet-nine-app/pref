@@ -1,20 +1,26 @@
 import sessionless from 'sessionless-node';
 import db from '../persistence/db.js';
 
-sessionless.getKeys = async () => {
-  return await db.getKeys();
-};
+sessionless.generateKeys(() => {}, db.getKeys);
     
 const fountURL = 'http://localhost:3006/';
 
 const MAGIC = {
   joinup: async (spell) => {
-    const gateway = await gatewayForSpell(spell.spellName);
+    const gateway = await MAGIC.gatewayForSpell(spell.spellName);
     spell.gateways.push(gateway);
+    const spellName = spell.spell;
 
-    const spellbook = await db.get('spellbook');
-    const nextIndex = spellbook.destinations.indexOf(spellbook.destinations.find(($) => $.stopName === 'pref'));
-    const nextDestination = spellbook.destinations[nextIndex].stopURL + '/' + spell.spellName;
+    const pref = await db.getPreferences('pref', 'pref');
+    const spellbooks = pref.spellbooks;
+    const spellbook = spellbooks.filter(spellbook => spellbook[spellName]).pop();
+    if(!spellbook) {
+      throw new Error('spellbook not found');
+    }
+
+    const spellEntry = spellbook[spellName];
+    const currentIndex = spellEntry.destinations.indexOf(spellEntry.destinations.find(($) => $.stopName === 'pref'));
+    const nextDestination = spellEntry.destinations[currentIndex + 1].stopURL + spellName;
 
     const res = await MAGIC.forwardSpell(spell, nextDestination);
     const body = await res.json();
@@ -35,7 +41,7 @@ const MAGIC = {
   },
 
   linkup: async (spell) => {
-    const gateway = await gatewayForSpell(spell.spellName);
+    const gateway = await MAGIC.gatewayForSpell(spell.spellName);
     spell.gateways.push(gateway);
 
     const res = await MAGIC.forwardSpell(spell, fountURL);
@@ -44,10 +50,10 @@ const MAGIC = {
   },
 
   gatewayForSpell: async (spellName) => {
-    const pref = await db.getUser('pref');
+    const pref = await db.getPreferences('pref', 'pref');
     const gateway = {
       timestamp: new Date().getTime() + '',
-      uuid: pref.uuid, 
+      uuid: pref.fountUUID, 
       minimumCost: 20,
       ordinal: pref.ordinal
     };      
