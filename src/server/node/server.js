@@ -15,7 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 const SUBDOMAIN = process.env.SUBDOMAIN || 'dev';
-const continuebeeURL = `https://${SUBDOMAIN}.continuebee.allyabase.com/`;
+
+const continuebeeURL = process.env.LOCALHOST ? 'http://localhost:2999' : `https://${SUBDOMAIN}.continuebee.allyabase.com/`;
+
 fount.baseURL = process.env.LOCALHOST ? 'http://localhost:3006/' : `${SUBDOMAIN}.fount.allyabase.com/`;
 bdo.baseURL = process.env.LOCALHOST ? 'http://localhost:3003/' : `${SUBDOMAIN}.bdo.allyabase.com/`;
 
@@ -228,17 +230,17 @@ console.log('got spell req');
     const spellName = req.params.spellName;
     const spell = req.body;
     
-    switch(spellName) {
-      case 'joinup': const joinupResp = await MAGIC.joinup(spell);
-        return res.send(joinupResp);
-        break;
-      case 'linkup': const linkupResp = await MAGIC.linkup(spell);
-        return res.send(linkupResp);
-        break;
+    if(!MAGIC[spellName]) {
+console.log('sending this back');
+      res.status(404); 
+      res.send({error: 'spell not found'});
     }
-  
-    res.status(404);
-    res.send({error: 'spell not found'});
+    
+    let spellResp = {};
+    spellResp = await MAGIC[spellName](spell);
+console.log('spellResp', spellResp);
+    res.status(spellResp.success ? 200 : 900);
+    return res.send(spellResp);
   } catch(err) {
 console.warn(err);
     res.status(404);
