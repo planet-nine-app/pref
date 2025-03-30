@@ -42,7 +42,7 @@ const bootstrap = async () => {
       spellbooks
     };
 
-    if(!pref.fountUUID || !pref.bdoUUID || !spellbooks || spellbooks.length === 0) {
+    if(!pref.fountUUID || !pref.bdoUUID || !spellbooks) {
       throw new Error('bootstrap failed');
     }
 
