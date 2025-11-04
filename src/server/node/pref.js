@@ -248,6 +248,19 @@ console.warn(err);
   }
 });
 
+app.get('/allyabase/preferences', async (req, res) => {
+  try {
+    const wikiPath = '.wiki/pages/allyabase-config';
+    const preferencesJSON = await fs.readFile(wikiPath);
+    const preferences = JSON.parse(preferencesJSON);
+    res.send({preferences}));
+  } catch(err) {
+console.warn(err);
+    res.status(404);
+    return res.send({error: 'not found'});
+  }
+});
+
 app.delete('/user/delete', async (req, res) => {
   try {
     const body = req.body;
