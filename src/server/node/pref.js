@@ -272,5 +272,9 @@ console.warn(err);
   }
 });
 
-app.listen(3002);
-console.log('give me your preferences');
+if (import.meta.url === `file://${process.argv[1]}`) {
+  app.listen(3002);
+  console.log('give me your preferences');
+}
+
+export default app;
